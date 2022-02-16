@@ -91,7 +91,7 @@ public privileged aspect AspectJMLRac$JMLRacPost4Project {
     JMLChecker.rethrowJMLAssertionError(rac$e);
   }
 
-public static aspect UtilPreconditionChecking_Board$cc87917d_f02a_492d_bed2_f4596f2a7f3e{
+public static aspect UtilPreconditionChecking_Board$8c64a3bc_e9dd_4680_845f_5e5b7660fb62{
   before(): (execution( * game.Board..*+.*(..))
           || execution(game.Board..*+.new(..))
           || execution( * game.Board+.*(..))
@@ -118,7 +118,7 @@ public static aspect UtilPreconditionChecking_Board$cc87917d_f02a_492d_bed2_f459
     JMLChecker.rethrowJMLAssertionError(rac$e);
   }
 
-public static aspect UtilPreconditionChecking_Mark$376d770f_c8b5_49b4_802d_bd09391fb0b0{
+public static aspect UtilPreconditionChecking_Mark$426952a6_b9de_4df8_bb35_577d52710554{
   before(): (execution( * game.Mark..*+.*(..))
           || execution(game.Mark..*+.new(..))
           || execution( * game.Mark+.*(..))
