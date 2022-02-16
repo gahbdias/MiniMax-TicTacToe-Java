@@ -26,7 +26,11 @@ public class MiniMax {
      * @param isMax Maximising or minimising player 
      * @return Value of the board 
      */
-    public static int miniMax(Board board, int depth, boolean isMax) {
+    /*@ requires board.BOARD_WIDTH > 0;
+    @*/
+    public static /*@ pure @*/ int miniMax(/*@ non_null @*/ Board board,
+    		int depth, boolean isMax) {
+    	
         int boardVal = evaluateBoard(board);
 
         // Terminal node (win/lose/draw) or max depth reached.
@@ -71,7 +75,9 @@ public class MiniMax {
      * @param board Board to evaluate
      * @return Coordinates of best move
      */
-    public static int[] getBestMove(Board board) {
+    /*@ requires board.BOARD_WIDTH > 0;
+    @*/
+    public static /*@ pure @*/ int[] getBestMove(/*@ non_null @*/ Board board) {
         int[] bestMove = new int[]{-1, -1};
         int bestValue = Integer.MIN_VALUE;
 
@@ -99,7 +105,10 @@ public class MiniMax {
      * @param board Board to evaluate
      * @return value of the board
      */
-    private static int evaluateBoard(Board board) {
+    /*@ requires board.BOARD_WIDTH > 0;
+    @ ensures \result == 10 || \result == -10 || \result == 0;
+    @*/
+    private static /* pure */ int evaluateBoard(/*@ non_null @*/ Board board) {
         int rowSum = 0;
         int bWidth = board.getWidth();
         int Xwin = X.getMark() * bWidth;
@@ -158,5 +167,4 @@ public class MiniMax {
 
         return 0;
     }
-
 }
