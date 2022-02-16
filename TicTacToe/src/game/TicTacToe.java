@@ -38,7 +38,9 @@ public class TicTacToe extends Application {
         
         /*@
         @ assignable row, col, mark;
-        @
+        @ ensures row == initRow;
+        @ ensures col == initCol;
+        @ ensures mark == initMark;
         @*/
         public Tile(int initRow, int initCol, Mark initMark) {
             row = initRow;
