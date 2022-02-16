@@ -10,8 +10,11 @@ public enum Mark {
     O('O'),
     BLANK(' ');
 
-    private final char mark;
+    private /*@ spec_public @*/ final char mark;
     
+    /*@
+    @ assignable mark;
+    @*/
     Mark(char initMark) {
         this.mark = initMark;
     }

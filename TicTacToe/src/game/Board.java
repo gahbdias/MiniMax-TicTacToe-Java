@@ -7,12 +7,15 @@ import static game.Mark.*;
  */
 public class Board {
 
-    private final Mark[][] board;
-    private Mark winningMark;
-    private final /*@ spec_public @*/ int BOARD_WIDTH = 3;
-    private boolean crossTurn, gameOver;
-    private int availableMoves = BOARD_WIDTH * BOARD_WIDTH;
+    private /*@ spec_public @*/ final Mark[][] board;
+    private /*@ spec_public @*/ Mark winningMark;
+    private final int BOARD_WIDTH = 3;
+    private /*@ spec_public @*/ boolean crossTurn, gameOver;
+    private /*@ spec_public @*/ int availableMoves = BOARD_WIDTH * BOARD_WIDTH;
 
+    /*@
+    @ assignable board, crossTurn, gameOver, winningMark, availableMoves;
+    @*/
     public Board() {
         board = new Mark[BOARD_WIDTH][BOARD_WIDTH];
         crossTurn = true;
