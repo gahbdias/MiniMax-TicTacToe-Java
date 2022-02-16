@@ -12,6 +12,7 @@ public class Board {
     private /*@ spec_public @*/ final int BOARD_WIDTH = 3;
     private /*@ spec_public @*/ boolean crossTurn, gameOver;
     private /*@ spec_public @*/ int availableMoves = BOARD_WIDTH * BOARD_WIDTH;
+    private int a;
 
     /*@ requires 0 < BOARD_WIDTH;
     @ assignable board, crossTurn, gameOver, winningMark, availableMoves, BOARD_WIDTH;
@@ -20,7 +21,7 @@ public class Board {
     @ ensures availableMoves == (BOARD_WIDTH * BOARD_WIDTH);
     @ ensures crossTurn == true;
     @ ensures gameOver == false;
-    @ ensures winningMark == BLANK;
+    @ ensures winningMark == ' ';
     @*/
     public Board() {
         board = new Mark[BOARD_WIDTH][BOARD_WIDTH];
@@ -28,13 +29,14 @@ public class Board {
         gameOver = false;
         winningMark = BLANK;
         initialiseBoard();
+        a = 1;
     }
 
     /*@ requires 0 < BOARD_WIDTH;
     @ assignable board;
     @ ensures (\forall int i, j;
     @       0 <= i && i < BOARD_WIDTH && 0 <= j && i < BOARD_WIDTH;
-    @       elems[i][j] == BLANK);
+    @       board[i][j] == ' ');
     @*/
     private void initialiseBoard() {
         for (int row = 0; row < BOARD_WIDTH; row++) {
@@ -54,15 +56,21 @@ public class Board {
      * @return true if mark was placed successfully
      */
     /*@ requires 0 <= row;
-    @ requires 0 <= column;
+    @ requires 0 <= col;
     @ {|
     @   requires row < 0 || row >= BOARD_WIDTH || col < 0 || col >= BOARD_WIDTH || isTileMarked(row, col) || gameOver;
     @   ensures \result == false;
     @ also
-    @   requires !(row < 0 || row >= BOARD_WIDTH || col < 0 || col >= BOARD_WIDTH || isTileMarked(row, col) || gameOver) == false;
+    @   requires !(row < 0 || row >= BOARD_WIDTH || col < 0 || col >= BOARD_WIDTH || isTileMarked(row, col) || gameOver) == false && crossTurn == true;
     @   assignable availableMoves, board[row][col];
     @   ensures availableMoves == \old(availableMoves - 1);
-    @   ensures board[row][col] = crossTurn ? X : O;
+    @   ensures board[row][col] = 'X';
+    @   ensures \result == true;
+    @ also
+    @   requires !(row < 0 || row >= BOARD_WIDTH || col < 0 || col >= BOARD_WIDTH || isTileMarked(row, col) || gameOver) == false && crossTurn == false;
+    @   assignable availableMoves, board[row][col];
+    @   ensures availableMoves == \old(availableMoves - 1);
+    @   ensures board[row][col] = 'O';
     @   ensures \result == true;
     @ |}
     @*/
@@ -142,20 +150,20 @@ public class Board {
      */
     /*@ requires 0 <= rowSum;
     @ {|
-    @   requires rowSum == (X.getMark() * BOARD_WIDTH);
-    @   assignable gameover, winningMark;
+    @   requires rowSum == ('X' * BOARD_WIDTH);
+    @   assignable gameOver, winningMark;
     @   ensures gameOver == true;
-    @   ensures winningMark == X;
-    @   ensures \result == X;
+    @   ensures winningMark == 'X';
+    @   ensures \result == 'X';
     @ also
-    @   requires rowSum == (O.getMark() * BOARD_WIDTH);
-    @   assignable gameover, winningMark;
+    @   requires rowSum == ('O' * BOARD_WIDTH);
+    @   assignable gameOver, winningMark;
     @   ensures gameOver == true;
-    @   ensures winningMark == O;
-    @   ensures \result == O;
+    @   ensures winningMark == 'O';
+    @   ensures \result == 'O';
     @ also
-    @   requires rowSum != (O.getMark() * BOARD_WIDTH) && rowSum != (X.getMark() * BOARD_WIDTH);
-    @   ensures \result == BLANK;
+    @   requires rowSum != ('O' * BOARD_WIDTH) && rowSum != ('X' * BOARD_WIDTH);
+    @   ensures \result == ' ';
     @ |}
     @*/
     private Mark calcWinner(int rowSum) {
