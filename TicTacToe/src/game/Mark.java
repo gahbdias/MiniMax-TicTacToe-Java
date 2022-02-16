@@ -37,7 +37,6 @@ public enum Mark {
     
     /*@
     @ assignable \nothing;
-    @ ensures \result == 'X' || \result == 'O' || \result == ' ';
     @*/
     @Override
     public /*@ pure @*/ String toString() {

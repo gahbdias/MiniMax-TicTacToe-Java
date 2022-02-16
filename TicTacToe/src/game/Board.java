@@ -18,17 +18,16 @@ public class Board {
     private /*@ spec_public @*/ Mark markO = O;
     
     //@ public invariant 0 < BOARD_WIDTH;
-    //@ public invariant 7 <= availableMoves;
+    //@ public invariant 0 <= availableMoves;
     //@ public invariant (BOARD_WIDTH * BOARD_WIDTH) >= availableMoves;
 
-    /*@ requires 0 < BOARD_WIDTH;
-    @ assignable board, crossTurn, gameOver, winningMark, availableMoves, BOARD_WIDTH, markBlank, markX, markO;
+    /*@ assignable board, crossTurn, gameOver, winningMark, availableMoves, BOARD_WIDTH, markBlank, markX, markO;
     @ ensures board.length == BOARD_WIDTH;
     @ ensures board[0].length == BOARD_WIDTH;
     @ ensures availableMoves == (BOARD_WIDTH * BOARD_WIDTH);
     @ ensures crossTurn == true;
     @ ensures gameOver == false;
-    @ ensures winningMark == markX;
+    @ ensures winningMark == markBlank;
     @*/
     public Board() {
         board = new Mark[BOARD_WIDTH][BOARD_WIDTH];
@@ -38,8 +37,7 @@ public class Board {
         initialiseBoard();
     }
 
-    /*@ requires 0 < BOARD_WIDTH;
-    @ assignable board;
+    /*@ assignable board;
     @ ensures (\forall int i, j;
     @       0 <= i && i < BOARD_WIDTH && 0 <= j && j < BOARD_WIDTH;
     @       board[i][j] == markBlank);
@@ -61,25 +59,25 @@ public class Board {
      * @param col Column coordinate to attempt to mark
      * @return true if mark was placed successfully
      */
-    /*@ requires 0 <= row;
-    @ requires 0 <= col;
-    @ {|
-    @   requires row < 0 || row >= BOARD_WIDTH || col < 0 || col >= BOARD_WIDTH || isTileMarked(row, col) || gameOver;
-    @   ensures \result == false;
-    @ also
-    @   requires !(row < 0 || row >= BOARD_WIDTH || col < 0 || col >= BOARD_WIDTH || isTileMarked(row, col) || gameOver) == false && crossTurn == true;
-    @   assignable availableMoves, board[row][col];
-    @   ensures availableMoves == \old(availableMoves - 1);
-    @   ensures board[row][col] == markX;
-    @   ensures \result == true;
-    @ also
-    @   requires !(row < 0 || row >= BOARD_WIDTH || col < 0 || col >= BOARD_WIDTH || isTileMarked(row, col) || gameOver) == false && crossTurn == false;
-    @   assignable availableMoves, board[row][col];
-    @   ensures availableMoves == \old(availableMoves - 1);
-    @   ensures board[row][col] == markO;
-    @   ensures \result == true;
-    @ |}
-    @*/
+//    /*@ requires 0 <= row;
+//    @ requires 0 <= col;
+//    @ {|
+//    @   requires row < 0 || row >= BOARD_WIDTH || col < 0 || col >= BOARD_WIDTH || isTileMarked(row, col) || gameOver;
+//    @   ensures \result == false;
+//    @ also
+//    @   requires !(row < 0 || row >= BOARD_WIDTH || col < 0 || col >= BOARD_WIDTH || isTileMarked(row, col) || gameOver) == false && crossTurn == true;
+//    @   assignable availableMoves, board[row][col];
+//    @   ensures availableMoves == \old(availableMoves - 1);
+//    @   ensures board[row][col] == markX;
+//    @   ensures \result == true;
+//    @ also
+//    @   requires !(row < 0 || row >= BOARD_WIDTH || col < 0 || col >= BOARD_WIDTH || isTileMarked(row, col) || gameOver) == false && crossTurn == false;
+//    @   assignable availableMoves, board[row][col];
+//    @   ensures availableMoves == \old(availableMoves - 1);
+//    @   ensures board[row][col] == markO;
+//    @   ensures \result == true;
+//    @ |}
+//    @*/
     public boolean placeMark(int row, int col) {
         if (row < 0 || row >= BOARD_WIDTH || col < 0 || col >= BOARD_WIDTH
                 || isTileMarked(row, col) || gameOver) {
