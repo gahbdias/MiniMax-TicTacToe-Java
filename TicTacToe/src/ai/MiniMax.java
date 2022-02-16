@@ -26,7 +26,8 @@ public class MiniMax {
      * @param isMax Maximising or minimising player 
      * @return Value of the board 
      */
-    /*@ requires board.BOARD_WIDTH > 0;
+    /*@ requires 0 < depth;
+    @ signals_only \nothing;
     @*/
     public static /*@ pure @*/ int miniMax(/*@ non_null @*/ Board board,
     		int depth, boolean isMax) {
@@ -75,7 +76,7 @@ public class MiniMax {
      * @param board Board to evaluate
      * @return Coordinates of best move
      */
-    /*@ requires board.BOARD_WIDTH > 0;
+    /*@ signals_only \nothing;
     @*/
     public static /*@ pure @*/ int[] getBestMove(/*@ non_null @*/ Board board) {
         int[] bestMove = new int[]{-1, -1};
@@ -105,8 +106,8 @@ public class MiniMax {
      * @param board Board to evaluate
      * @return value of the board
      */
-    /*@ requires board.BOARD_WIDTH > 0;
-    @ ensures \result == 10 || \result == -10 || \result == 0;
+    /*@ ensures \result == 10 || \result == -10 || \result == 0;
+    @ signals_only \nothing;
     @*/
     private static /* pure */ int evaluateBoard(/*@ non_null @*/ Board board) {
         int rowSum = 0;
