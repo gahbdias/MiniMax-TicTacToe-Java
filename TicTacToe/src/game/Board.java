@@ -9,7 +9,7 @@ public class Board {
 
     private /*@ spec_public @*/ final Mark[][] board;
     private /*@ spec_public @*/ Mark winningMark;
-    private final int BOARD_WIDTH = 3;
+    private /*@ spec_public @*/ final int BOARD_WIDTH = 3;
     private /*@ spec_public @*/ boolean crossTurn, gameOver;
     private /*@ spec_public @*/ int availableMoves = BOARD_WIDTH * BOARD_WIDTH;
 
