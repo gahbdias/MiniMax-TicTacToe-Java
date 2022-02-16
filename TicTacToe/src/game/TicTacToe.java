@@ -32,12 +32,12 @@ public class TicTacToe extends Application {
      */
     public final static class Tile extends Button {
 
-        private final int row;
-        private final int col;
-        private Mark mark;
+        private /*@ spec_public @*/ final int row;
+        private /*@ spec_public @*/ final int col;
+        private /*@ spec_public @*/ Mark mark;
         
         /*@
-        @
+        @ assignable row, col, mark;
         @
         @*/
         public Tile(int initRow, int initCol, Mark initMark) {
@@ -47,6 +47,9 @@ public class TicTacToe extends Application {
             initialiseTile();
         }
 
+        /*@
+        @
+        @*/
         private void initialiseTile() {
             this.setOnMouseClicked(e -> {
                 if (!board.isCrossTurn()) {
@@ -64,6 +67,10 @@ public class TicTacToe extends Application {
          * Retrieves state of tile from board which has the corresponding row 
          * and column coordinate and updates this object's text field with it.
          */
+        /*@
+        @
+        @
+        @*/
         public void update() {
             this.mark = board.getMarkAt(this.row, this.col);
             this.setText("" + mark);
@@ -74,6 +81,10 @@ public class TicTacToe extends Application {
         launch(args);
     }
 
+    /*@
+    @
+    @
+    @*/
     @Override
     public void start(Stage primaryStage) {
         root = new BorderPane();
@@ -95,6 +106,10 @@ public class TicTacToe extends Application {
      * of the game board.
      * @return the GridPane
      */
+    /*@
+    @
+    @
+    @*/
     private static GridPane generateGUI() {
         gameBoard = new GridPane();
         board = new Board();
@@ -110,6 +125,10 @@ public class TicTacToe extends Application {
         return gameBoard;
     }
 
+    /*@
+    @
+    @
+    @*/
     private MenuBar initialiseMenu() {
         menuBar = new MenuBar();
         gameMenu = new Menu("game");
@@ -127,6 +146,10 @@ public class TicTacToe extends Application {
      * Runs the main game loop which is responsible for playing the AI's turn 
      * as long as the game is still ongoing.
      */
+    /*@
+    @
+    @
+    @*/
     private void runGameLoop() {
         gameTimer = new AnimationTimer() {
             @Override
@@ -147,6 +170,10 @@ public class TicTacToe extends Application {
      * Analyses the current state of the board and plays the move best for the X
      * player. Updates the tile it places a mark on also.
      */
+    /*@
+    @
+    @
+    @*/
     private static void playAI() {
         int[] move = MiniMaxCombined.getBestMove(board);
         int row = move[0];
@@ -162,6 +189,10 @@ public class TicTacToe extends Application {
         }
     }
 
+    /*@
+    @
+    @
+    @*/
     private void resetGame() {
         root.setCenter(generateGUI());
         runGameLoop();
@@ -170,6 +201,10 @@ public class TicTacToe extends Application {
     /**
      * Stops the game loop and displays the result of the game.
      */
+    /*@
+    @
+    @
+    @*/
     private void endGame() {
         gameTimer.stop();
         Alert gameOverAlert = new Alert(AlertType.INFORMATION, "",
