@@ -11,21 +11,33 @@ public enum Mark {
     BLANK(' ');
 
     private final char mark;
-
+    
     Mark(char initMark) {
         this.mark = initMark;
     }
-
-    public boolean isMarked() {
+    
+    /*@
+    @ assignable \nothing;
+    @ ensures \result == true || \result == false;
+    @*/
+    public /*@ pure @*/ boolean isMarked() {
         return this != BLANK;
     }
-
-    public char getMark() {
+    
+    /*@
+    @ assignable \nothing;
+    @ ensures \result == 'X' || \result == 'O' || \result == ' ';
+    @*/
+    public /*@ pure @*/ char getMark() {
         return this.mark;
     }
-
+    
+    /*@
+    @ assignable \nothing;
+    @ ensures \result == 'X' || \result == 'O' || \result == ' ';
+    @*/
     @Override
-    public String toString() {
+    public /*@ pure @*/ String toString() {
         return String.valueOf(mark);
     }
 }

@@ -35,7 +35,11 @@ public class TicTacToe extends Application {
         private final int row;
         private final int col;
         private Mark mark;
-
+        
+        /*@
+        @
+        @
+        @*/
         public Tile(int initRow, int initCol, Mark initMark) {
             row = initRow;
             col = initCol;
