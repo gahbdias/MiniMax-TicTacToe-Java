@@ -9,12 +9,18 @@ public class Board {
 
     private /*@ spec_public @*/ final Mark[][] board;
     private /*@ spec_public @*/ Mark winningMark;
-    private final int BOARD_WIDTH = 3;
+    private /*@ spec_public @*/ final int BOARD_WIDTH = 3;
     private /*@ spec_public @*/ boolean crossTurn, gameOver;
     private /*@ spec_public @*/ int availableMoves = BOARD_WIDTH * BOARD_WIDTH;
 
-    /*@
-    @ assignable board, crossTurn, gameOver, winningMark, availableMoves;
+    /*@ requires 0 < BOARD_WIDTH;
+    @ assignable board, crossTurn, gameOver, winningMark, availableMoves, BOARD_WIDTH;
+    @ ensures board.length == BOARD_WIDTH;
+    @ ensures board[0].length == BOARD_WIDTH;
+    @ ensures availableMoves == (BOARD_WIDTH * BOARD_WIDTH);
+    @ ensures crossTurn == true;
+    @ ensures gameOver == false;
+    @ ensures winningMark == BLANK;
     @*/
     public Board() {
         board = new Mark[BOARD_WIDTH][BOARD_WIDTH];
@@ -24,6 +30,12 @@ public class Board {
         initialiseBoard();
     }
 
+    /*@ requires 0 < BOARD_WIDTH;
+    @ assignable board;
+    @ ensures (\forall int i, j;
+    @       0 <= i && i < BOARD_WIDTH && 0 <= j && i < BOARD_WIDTH;
+    @       elems[i][j] == BLANK);
+    @*/
     private void initialiseBoard() {
         for (int row = 0; row < BOARD_WIDTH; row++) {
             for (int col = 0; col < BOARD_WIDTH; col++) {
@@ -41,6 +53,19 @@ public class Board {
      * @param col Column coordinate to attempt to mark
      * @return true if mark was placed successfully
      */
+    /*@ requires 0 <= row;
+    @ requires 0 <= column;
+    @ {|
+    @   requires row < 0 || row >= BOARD_WIDTH || col < 0 || col >= BOARD_WIDTH || isTileMarked(row, col) || gameOver;
+    @   ensures \result == false;
+    @ also
+    @   requires !(row < 0 || row >= BOARD_WIDTH || col < 0 || col >= BOARD_WIDTH || isTileMarked(row, col) || gameOver) == false;
+    @   assignable availableMoves, board[row][col];
+    @   ensures availableMoves == \old(availableMoves - 1);
+    @   ensures board[row][col] = crossTurn ? X : O;
+    @   ensures \result == true;
+    @ |}
+    @*/
     public boolean placeMark(int row, int col) {
         if (row < 0 || row >= BOARD_WIDTH || col < 0 || col >= BOARD_WIDTH
                 || isTileMarked(row, col) || gameOver) {
@@ -115,6 +140,24 @@ public class Board {
      * @param rowSum Sum of characters' ASCII values in a row
      * @return Mark indicating which player won or a space character if neither
      */
+    /*@ requires 0 <= rowSum;
+    @ {|
+    @   requires rowSum == (X.getMark() * BOARD_WIDTH);
+    @   assignable gameover, winningMark;
+    @   ensures gameOver == true;
+    @   ensures winningMark == X;
+    @   ensures \result == X;
+    @ also
+    @   requires rowSum == (O.getMark() * BOARD_WIDTH);
+    @   assignable gameover, winningMark;
+    @   ensures gameOver == true;
+    @   ensures winningMark == O;
+    @   ensures \result == O;
+    @ also
+    @   requires rowSum != (O.getMark() * BOARD_WIDTH) && rowSum != (X.getMark() * BOARD_WIDTH);
+    @   ensures \result == BLANK;
+    @ |}
+    @*/
     private Mark calcWinner(int rowSum) {
         int Xwin = X.getMark() * BOARD_WIDTH;
         int Owin = O.getMark() * BOARD_WIDTH;
@@ -130,24 +173,45 @@ public class Board {
         return BLANK;
     }
 
+    /*@ assignable crossTurn;
+    @ ensures crossTurn == \old(!crossTurn);
+    @*/
     private void togglePlayer() {
         crossTurn = !crossTurn;
     }
 
+    /*@ assignable \nothing;
+    @ ensures \result == (availableMoves > 0);
+    @*/
     @SuppressWarnings("BooleanMethodIsAlwaysInverted")
-    public boolean anyMovesAvailable() {
+    public /*@ pure @*/ boolean anyMovesAvailable() {
         return availableMoves > 0;
     }
 
-    public Mark getMarkAt(int row, int column) {
+    /*@ requires 0 <= row;
+    @ requires 0 <= column;
+    @ assignable \nothing;
+    @ ensures \result == board[row][column];
+    @*/
+    public /*@ pure @*/ Mark getMarkAt(int row, int column) {
         return board[row][column];
     }
 
-    public boolean isTileMarked(int row, int column) {
+    /*@ requires 0 <= row;
+    @ requires 0 <= column;
+    @ assignable \nothing;
+    @ ensures \result == board[row][column].isMarked();
+    @*/
+    public /*@ pure @*/ boolean isTileMarked(int row, int column) {
         return board[row][column].isMarked();
     }
 
-    public void setMarkAt(int row, int column, Mark newMark) {
+    /*@ requires 0 <= row;
+    @ requires 0 <= column;
+    @ assignable board[row][column];
+    @ ensures board[row][column] == newMark;
+    @*/
+    public void setMarkAt(int row, int column, /*@ non_null @*/ Mark newMark) {
         board[row][column] = newMark;
     }
 
@@ -163,19 +227,31 @@ public class Board {
         return strBldr.toString();
     }
 
-    public boolean isCrossTurn() {
+    /*@ assignable \nothing;
+    @ ensures \result == crossTurn;
+    @*/
+    public /*@ pure @*/ boolean isCrossTurn() {
         return crossTurn;
     }
 
-    public int getWidth() {
+    /*@ assignable \nothing;
+    @ ensures \result == BOARD_WIDTH;
+    @*/
+    public /*@ pure @*/ int getWidth() {
         return BOARD_WIDTH;
     }
 
-    public boolean isGameOver() {
+    /*@ assignable \nothing;
+    @ ensures \result == gameOver;
+    @*/
+    public /*@ pure @*/ boolean isGameOver() {
         return gameOver;
     }
 
-    public Mark getWinningMark() {
+    /*@ assignable \nothing;
+    @ ensures \result == winningMark;
+    @*/
+    public /*@ pure @*/ Mark getWinningMark() {
         return winningMark;
     }
 }
